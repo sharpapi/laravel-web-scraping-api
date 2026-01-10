@@ -50,15 +50,7 @@ class WebScrapingApiService extends SharpApiClient
      */
     public function scrapeWebpage(string $url): array
     {
-        // Note: makeRequest in php-core doesn't properly handle GET query parameters,
-        // so we build the query string manually and append to URL
-        $endpoint = '/utilities/scrape_url?' . http_build_query(['url' => $url]);
-
-        $response = $this->makeRequest(
-            'GET',
-            $endpoint,
-            []  // Empty array since params are already in URL
-        );
+        $response = $this->makeGetRequest('/utilities/scrape_url', ['url' => $url]);
 
         return json_decode((string) $response->getBody(), true);
     }

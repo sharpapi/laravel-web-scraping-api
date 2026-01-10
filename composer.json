@@ -1,6 +1,6 @@
 {
   "name": "sharpapi/laravel-web-scraping-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Web Scraping API for Laravel powered by SharpAPI.com",
   "keywords": [
     "sharpapi",

@@ -7,6 +7,7 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
+| #317 | 10:10 PM | 🔄 | Refactored web scraping to use new makeGetRequest helper method | ~302 |
 | #299 | 9:59 PM | 🔴 | Fixed GET request parameter handling in web scraping API service | ~285 |
 | #291 | 9:49 PM | 🔄 | Removed unused web scraping methods from service class | ~337 |
 | #290 | " | 🔴 | Fixed web scraping API endpoint and method signature | ~336 |
