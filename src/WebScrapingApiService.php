@@ -31,106 +31,36 @@ class WebScrapingApiService extends SharpApiClient
     }
 
     /**
-     * Scrape a webpage and extract its HTML content.
+     * Scrape a webpage and extract structured content, metadata, and key page elements.
      *
-     * @param string $url The URL of the webpage to scrape
-     * @param array $options Additional options for the scraping request
-     * @return array The scraped HTML content and metadata
+     * Returns comprehensive data including:
+     * - Page title, description, keywords
+     * - Meta tags (Open Graph, Twitter cards)
+     * - Structured content (headings, paragraphs)
+     * - Links (internal and external)
+     * - Language detection
+     * - Timestamps
+     *
+     * @param string $url The URL of the webpage to scrape (required)
+     * @return array The scraped content with structured metadata
      *
      * @throws GuzzleException
      *
      * @api
      */
-    public function scrapeWebpage(string $url, array $options = []): array
+    public function scrapeWebpage(string $url): array
     {
-        $params = array_merge(['url' => $url], $options);
+        // Note: makeRequest in php-core doesn't properly handle GET query parameters,
+        // so we build the query string manually and append to URL
+        $endpoint = '/utilities/scrape_url?' . http_build_query(['url' => $url]);
 
         $response = $this->makeRequest(
             'GET',
-            '/utility/web-scraping/html',
-            $params
+            $endpoint,
+            []  // Empty array since params are already in URL
         );
 
         return json_decode((string) $response->getBody(), true);
     }
 
-    /**
-     * Extract structured data from a webpage.
-     *
-     * @param string $url The URL of the webpage to extract data from
-     * @param array $selectors CSS selectors to extract specific elements
-     * @param array $options Additional options for the extraction request
-     * @return array The extracted structured data
-     *
-     * @throws GuzzleException
-     *
-     * @api
-     */
-    public function extractStructuredData(string $url, array $selectors, array $options = []): array
-    {
-        $params = array_merge(
-            [
-                'url' => $url,
-                'selectors' => $selectors,
-            ],
-            $options
-        );
-
-        $response = $this->makeRequest(
-            'POST',
-            '/utility/web-scraping/extract',
-            $params
-        );
-
-        return json_decode((string) $response->getBody(), true);
-    }
-
-
-    /**
-     * Extract all links from a webpage.
-     *
-     * @param string $url The URL of the webpage to extract links from
-     * @param array $options Additional options for the link extraction request
-     * @return array The extracted links
-     *
-     * @throws GuzzleException
-     *
-     * @api
-     */
-    public function extractLinks(string $url, array $options = []): array
-    {
-        $params = array_merge(['url' => $url], $options);
-
-        $response = $this->makeRequest(
-            'GET',
-            '/utility/web-scraping/links',
-            $params
-        );
-
-        return json_decode((string) $response->getBody(), true);
-    }
-
-    /**
-     * Extract all images from a webpage.
-     *
-     * @param string $url The URL of the webpage to extract images from
-     * @param array $options Additional options for the image extraction request
-     * @return array The extracted images
-     *
-     * @throws GuzzleException
-     *
-     * @api
-     */
-    public function extractImages(string $url, array $options = []): array
-    {
-        $params = array_merge(['url' => $url], $options);
-
-        $response = $this->makeRequest(
-            'GET',
-            '/utility/web-scraping/images',
-            $params
-        );
-
-        return json_decode((string) $response->getBody(), true);
-    }
 }
